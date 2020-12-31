@@ -18,26 +18,29 @@ class CollectSecretsFromS3
     {
         Helpers::step('<options=bold>Collecting Secrets From S3</>');
 
-        $secrets = $this->fetchSecrets($_ENV['ENV_TYPE'], $_ENV['APP_NAME']);
+        $secrets = $this->fetchSecrets($this->parseSecrets(getcwd().'/deploy-s3.env'));
 
         $this->files->put(
-            $this->appPath.'/vaporSecrets.php',
-            '<?php return '.var_export($secrets, true).';'
+            $this->appPath . '/vaporSecrets.php',
+            '<?php return ' . var_export($secrets, true) . ';'
         );
     }
 
-    public function fetchSecrets(string $envType, string $appName)
+    public function fetchSecrets(array $deployVars)
     {
+        $envType = $deployVars['ENV_TYPE'];
+        $appName = $deployVars['APP_NAME'];
+
         echo "Building [{$appName}] [{$envType}] environment." . PHP_EOL;
 
         $s3Client = new S3Client($args = [
             "version" => "latest",
             "credentials" => [
-                "key" => $_ENV['S3_SECRETS_KEY'],
-                "secret" => $_ENV['S3_SECRETS_SECRET'],
+                "key" => $deployVars['S3_SECRETS_KEY'],
+                "secret" => $deployVars['S3_SECRETS_SECRET'],
             ],
-            "region" => $_ENV['S3_SECRETS_REGION'],
-            "bucket" => $_ENV['S3_SECRETS_BUCKET'],
+            "region" => $deployVars['S3_SECRETS_REGION'],
+            "bucket" => $deployVars['S3_SECRETS_BUCKET'],
         ]);
 
         $envFiles = [
@@ -59,7 +62,7 @@ class CollectSecretsFromS3
             ]);
 
             foreach (self::parseSecrets($localPath) as $name => $value) {
-                echo "Injecting secret [{$name}] into runtime.".PHP_EOL;
+                echo "Injecting secret [{$name}] into runtime." . PHP_EOL;
 
                 $secrets[$name] = $value;
             }
