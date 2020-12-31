@@ -18,7 +18,7 @@ class CollectSecretsFromS3
     {
         Helpers::step('<options=bold>Collecting Secrets From S3</>');
 
-        $secrets = $this->fetchSecrets($this->parseSecrets(getcwd().'/deploy-s3.env'));
+        $secrets = $this->fetchSecrets($this->parseSecrets(getcwd() . '/deploy-s3.env'));
 
         $this->files->put(
             $this->appPath . '/vaporSecrets.php',
@@ -48,6 +48,8 @@ class CollectSecretsFromS3
             "$envType-common-vars.env" => __DIR__ . "/$envType-common-vars.env",
             "$envType-$appName-secrets.env" => __DIR__ . "/$envType-$appName-secrets.env",
             "$envType-$appName-vars.env" => __DIR__ . "/$envType-$appName-vars.env",
+            "emr-direct-client-cert.pem" => $this->appPath . "/emr-direct-client-cert.pem",
+            "emr-direct-server-cert.pem" => $this->appPath . "/emr-direct-server-cert.pem",
         ];
 
         $secrets = [];
@@ -61,6 +63,10 @@ class CollectSecretsFromS3
                 'SaveAs' => $localPath,
             ]);
 
+            if (!$this->endsWith($s3Key, '.env')) {
+                continue;
+            }
+
             foreach (self::parseSecrets($localPath) as $name => $value) {
                 echo "Fetched secret [{$name}]." . PHP_EOL;
 
@@ -69,6 +75,15 @@ class CollectSecretsFromS3
         }
 
         return $secrets;
+    }
+
+    private function endsWith($haystack, $needle)
+    {
+        $length = strlen($needle);
+        if (!$length) {
+            return true;
+        }
+        return substr($haystack, -$length) === $needle;
     }
 
     private function parseSecrets(string $localPath): array
@@ -82,8 +97,13 @@ class CollectSecretsFromS3
                 [$name, $value] = explode('=', $line, 2);
 
                 return [
-                    trim($name) => trim($value)
+                    $this->sanitize($name) => $this->sanitize($value)
                 ];
             })->filter()->all();
+    }
+
+    private function sanitize(string $value)
+    {
+        return str_replace("'", '', str_replace('"', '', trim($value)));
     }
 }
