@@ -84,6 +84,6 @@ class CollectSecretsFromS3
                 return [
                     trim($name) => trim($value)
                 ];
-            })->filter()->values()->all();
+            })->filter()->all();
     }
 }
