@@ -62,7 +62,7 @@ class CollectSecretsFromS3
             ]);
 
             foreach (self::parseSecrets($localPath) as $name => $value) {
-                echo "Injecting secret [{$name}] into runtime." . PHP_EOL;
+                echo "Fetched secret [{$name}]." . PHP_EOL;
 
                 $secrets[$name] = $value;
             }
