@@ -14,10 +14,7 @@ trait ParticipatesInBuildProcess
     protected $vaporPath;
     protected $buildPath;
     protected $files;
-    /**
-     * @var null
-     */
-    private $environmentType;
+    protected $environmentType;
 
     /**
      * Create a new project builder.
