@@ -14,6 +14,10 @@ trait ParticipatesInBuildProcess
     protected $vaporPath;
     protected $buildPath;
     protected $files;
+    /**
+     * @var null
+     */
+    private $environmentType;
 
     /**
      * Create a new project builder.
@@ -22,7 +26,7 @@ trait ParticipatesInBuildProcess
      *
      * @return void
      */
-    public function __construct($environment = null)
+    public function __construct($environment = null, $environmentType = null)
     {
         $this->environment = $environment;
 
@@ -33,5 +37,6 @@ trait ParticipatesInBuildProcess
         $this->buildPath = Path::build();
 
         $this->files = new Filesystem();
+        $this->environmentType = $environmentType;
     }
 }

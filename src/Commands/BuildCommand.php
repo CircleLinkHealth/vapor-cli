@@ -39,6 +39,7 @@ class BuildCommand extends Command
         $this
             ->setName('build')
             ->addArgument('environment', InputArgument::OPTIONAL, 'The environment name', 'staging')
+            ->addArgument('environment_type', InputArgument::OPTIONAL, 'The environment type', 'staging')
             ->addOption('asset-url', null, InputOption::VALUE_OPTIONAL, 'The asset base URL')
             ->setDescription('Build the project archive');
     }
@@ -73,7 +74,7 @@ class BuildCommand extends Command
             new ProcessAssets($this->option('asset-url')),
             new ExtractAssetsToSeparateDirectory(),
             new InjectHandlers($this->argument('environment')),
-            new CollectSecretsFromS3($this->argument('environment')),
+            new CollectSecretsFromS3($this->argument('environment'), $this->argument('environment_type')),
             new InjectErrorPages(),
             new InjectRdsCertificate(),
             new ExtractVendorToSeparateDirectory($this->argument('environment')),

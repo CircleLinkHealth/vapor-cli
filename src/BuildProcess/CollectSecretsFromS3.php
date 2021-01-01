@@ -18,7 +18,7 @@ class CollectSecretsFromS3
     {
         Helpers::step('<options=bold>Collecting Secrets From S3</>');
 
-        $secrets = $this->fetchSecrets($this->parseSecrets(getcwd() . '/deploy-s3.env'));
+        $secrets = $this->fetchSecrets($this->parseSecrets(getcwd() . "/{$this->environmentType}-deploy-s3.env"));
 
         $this->files->put(
             $this->appPath . '/vaporSecrets.php',
