@@ -38,8 +38,8 @@ class BuildCommand extends Command
     {
         $this
             ->setName('build')
-            ->addArgument('environment', InputArgument::OPTIONAL, 'The environment name', 'staging')
-            ->addArgument('environment_type', InputArgument::OPTIONAL, 'The environment type', 'staging')
+            ->addArgument('environment', InputArgument::REQUIRED, 'The environment name', 'staging')
+            ->addArgument('environment_type', InputArgument::REQUIRED, 'The environment type', 'staging')
             ->addOption('asset-url', null, InputOption::VALUE_OPTIONAL, 'The asset base URL')
             ->setDescription('Build the project archive');
     }
