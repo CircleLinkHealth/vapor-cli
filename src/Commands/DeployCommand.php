@@ -29,8 +29,8 @@ class DeployCommand extends Command
     {
         $this
             ->setName('deploy')
-            ->addArgument('environment', InputArgument::REQUIRED, 'The environment name', 'staging')
-            ->addArgument('environment_type', InputArgument::REQUIRED, 'The environment type', 'staging')
+            ->addArgument('environment', InputArgument::REQUIRED, 'The environment name')
+            ->addArgument('environment_type', InputArgument::REQUIRED, 'The environment type')
             ->addOption('commit', null, InputOption::VALUE_OPTIONAL, 'The commit hash that is being deployed')
             ->addOption('message', null, InputOption::VALUE_OPTIONAL, 'The message for the commit that is being deployed')
             ->addOption('without-waiting', null, InputOption::VALUE_NONE, 'Deploy without waiting for progress')
