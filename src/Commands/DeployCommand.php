@@ -106,6 +106,7 @@ class DeployCommand extends Command
 
         $this->call('build', [
             'environment' => $this->argument('environment'),
+            'environment_type' => $this->argument('environment_type'),
             '--asset-url' => $this->assetDomain($project).'/'.$uuid,
         ]);
 
