@@ -5,7 +5,7 @@ namespace Laravel\VaporCli\BuildProcess;
 use Aws\S3\S3Client;
 use Laravel\VaporCli\Helpers;
 
-class CollectSecretsFromS3
+class  CollectSecretsFromS3
 {
     use ParticipatesInBuildProcess;
 
@@ -28,6 +28,8 @@ class CollectSecretsFromS3
 
     public function fetchSecrets(array $deployVars)
     {
+        if (empty($deployVars)) return [];
+
         $envType = $deployVars['ENV_TYPE'];
         $appName = $deployVars['APP_NAME'];
 
@@ -88,6 +90,10 @@ class CollectSecretsFromS3
 
     private function parseSecrets(string $localPath): array
     {
+        if (!file_exists($localPath)) {
+            return [];
+        }
+
         return collect(file($localPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES))
             ->mapWithKeys(function ($line) {
                 if (strpos(trim($line), '#') === 0) {
