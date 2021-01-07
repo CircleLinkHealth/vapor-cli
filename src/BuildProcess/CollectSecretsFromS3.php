@@ -55,6 +55,11 @@ class CollectSecretsFromS3
         foreach ($this->s3FileMapPath($appName, $envType, $this->appPath) as $tuple) {
             $s3Key = $tuple['s3'];
             $localPath = $tuple['local'];
+            
+            if (! file_exists($localPath)) {
+                echo "Creating [{$localPath}]." . PHP_EOL;
+                touch($localPath);
+            }
 
             echo "Fetching [{$s3Key}] from S3." . PHP_EOL;
 
