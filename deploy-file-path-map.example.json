@@ -1,0 +1,18 @@
+[
+  {
+    "s3": "$envType-common-secrets.env",
+    "local": "__DIR__/$envType-common-secrets.env"
+  },
+  {
+    "s3": "$envType-$appName-secrets.env",
+    "local": "__DIR__/$envType-$appName-secrets.env"
+  },
+  {
+    "s3": "emr-direct-client-cert.pem",
+    "local": "$vaporBuildAppPath/emr-direct-client-cert.pem"
+  },
+  {
+    "s3": "emr-direct-server-cert.pem",
+    "local": "$vaporBuildAppPath/emr-direct-server-cert.pem"
+  }
+]
