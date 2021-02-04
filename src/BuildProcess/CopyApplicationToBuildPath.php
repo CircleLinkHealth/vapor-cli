@@ -3,6 +3,7 @@
 namespace Laravel\VaporCli\BuildProcess;
 
 use Laravel\VaporCli\ApplicationFiles;
+use Laravel\VaporCli\CLHModulesFiles;
 use Laravel\VaporCli\Helpers;
 use SplFileInfo;
 
@@ -21,7 +22,7 @@ class CopyApplicationToBuildPath
 
         $this->ensureBuildDirectoryExists();
 
-        foreach (ApplicationFiles::get($this->path) as $file) {
+        foreach (ApplicationFiles::get($this->path)->append(CLHModulesFiles::get("$this->path/../../modules")->getIterator()) as $file) {
             if ($file->isLink()) {
                 continue;
             }
