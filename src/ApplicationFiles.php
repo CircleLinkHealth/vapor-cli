@@ -21,6 +21,8 @@ class ApplicationFiles
                 ->exclude('.vapor')
                 ->notPath('/^'.preg_quote('tests', '/').'/')
                 ->exclude('node_modules')
+                ->exclude('bower_components')
+                ->exclude('vendor')
                 ->ignoreVcs(true)
                 ->ignoreDotFiles(false);
     }

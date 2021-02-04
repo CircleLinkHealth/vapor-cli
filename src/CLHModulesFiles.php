@@ -15,11 +15,15 @@ class CLHModulesFiles
      */
     public static function get($path)
     {
-        return (new Finder())
-                ->in($path)
-                ->directories()
-                ->name(explode("\n", file_get_contents('monorepo-modules.txt')))
-                ->notPath('/^'.preg_quote('tests', '/').'/')
+        $finder = (new Finder())
+            ->in($path);
+
+        foreach (explode("\n", file_get_contents('monorepo-modules.txt')) as $dir) {
+            $finder->path('/'.preg_quote($dir, '/').'/');
+        }
+
+        return  $finder
+                ->notPath('/^'.preg_quote('Tests', '/').'/')
                 ->exclude('node_modules')
                 ->exclude('vendor')
                 ->ignoreVcs(true)
