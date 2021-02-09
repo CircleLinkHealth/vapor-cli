@@ -16,10 +16,13 @@ use Symfony\Component\Console\Application;
  * Require the autoloader.
  */
 if (file_exists(__DIR__.'/../../autoload.php')) {
+    echo 'Using '.__DIR__.'/../../autoload.php'.PHP_EOL;
     require __DIR__.'/../../autoload.php';
 } elseif (file_exists(getcwd().'/vendor/autoload.php')) {
+    echo 'Using '.getcwd().'/vendor/autoload.php'.PHP_EOL;
     require getcwd().'/vendor/autoload.php';
 } else {
+    echo 'Using '.__DIR__.'/vendor/autoload.php'.PHP_EOL;
     require __DIR__.'/vendor/autoload.php';
 }
 
