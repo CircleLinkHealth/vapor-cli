@@ -73,6 +73,8 @@ class CollectSecretsFromS3
 
                 $secrets[$name] = $value;
             }
+
+            $this->files->delete($localPath);
         }
 
         return $secrets;
