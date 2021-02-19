@@ -83,6 +83,18 @@ class Manifest
     }
 
     /**
+     * Get the runtime for the given environment.
+     *
+     * @param string $environment
+     *
+     * @return string|null
+     */
+    public static function runtime($environment)
+    {
+        return static::current()['environments'][$environment]['runtime'] ?? null;
+    }
+
+    /**
      * Determine if the environment uses a Docker image.
      *
      * @param  string  $environment
@@ -131,7 +143,7 @@ class Manifest
                 'production' => array_filter([
                     'memory'     => 1024,
                     'cli-memory' => 512,
-                    'runtime'    => 'php-7.4',
+                    'runtime'    => 'php-7.4:al2',
                     'build'      => [
                         'COMPOSER_MIRROR_PATH_REPOS=1 composer install --no-dev',
                         'php artisan event:cache',
@@ -141,7 +153,7 @@ class Manifest
                 'staging' => array_filter([
                     'memory'     => 1024,
                     'cli-memory' => 512,
-                    'runtime'    => 'php-7.4',
+                    'runtime'    => 'php-7.4:al2',
                     'build'      => [
                         'COMPOSER_MIRROR_PATH_REPOS=1 composer install',
                         'php artisan event:cache',
